@@ -21,5 +21,6 @@ namespace Файловый_менеджер
         public string currentFont = "Arial";
         public string currentTheme = "Розовый минимализм";
         public float currentTextSize = 8;
+        //public int numberBooksOnPage = 10;
     }
 }

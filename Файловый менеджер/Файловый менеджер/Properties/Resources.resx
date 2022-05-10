@@ -118,43 +118,22 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="значок переименовать" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок переименовать.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="светло-розовый фон" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\светло-розовый фон.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="значок найти" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\значок найти.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="значок новая папка" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок новая папка.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="фон книги" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\фон книги.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="значок удалить" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок удалить.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="фон дождь" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\фон дождь.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="значок новый файл" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок новый файл.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="фон бумага" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\фон бумага.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="значок копировать" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок копировать.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="значок переместить" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок переместить.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="значок архивировать" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\значок архивировать.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="алмазный фон" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\алмазный фон.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="белый мех" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\белый мех.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="жемчужный фон" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\жемчужный фон.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="светло-розовый фон" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\светло-розовый фон.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="фон чёрные перья" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\фон чёрные перья.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="фон письма" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\фон письма.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

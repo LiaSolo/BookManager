@@ -29,44 +29,30 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.listBoxFiles = new System.Windows.Forms.ListBox();
-            this.textBoxFileWay = new System.Windows.Forms.TextBox();
+            this.textBoxSearching = new System.Windows.Forms.TextBox();
             this.comboBoxTheme = new System.Windows.Forms.ComboBox();
             this.labelTheme = new System.Windows.Forms.Label();
             this.labelFont = new System.Windows.Forms.Label();
             this.labelTextSize = new System.Windows.Forms.Label();
             this.comboBoxFont = new System.Windows.Forms.ComboBox();
             this.comboBoxTextSize = new System.Windows.Forms.ComboBox();
-            this.buttonNewFolder = new System.Windows.Forms.Button();
-            this.buttonNewFile = new System.Windows.Forms.Button();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonRename = new System.Windows.Forms.Button();
-            this.buttonMove = new System.Windows.Forms.Button();
-            this.buttonCopy = new System.Windows.Forms.Button();
-            this.buttonArchieve = new System.Windows.Forms.Button();
             this.buttonSearch = new System.Windows.Forms.Button();
+            this.listViewBooks = new System.Windows.Forms.ListView();
+            this.columnBookName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnAuthor = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnRating = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.textBoxBooksOnPage = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
-            // listBoxFiles
+            // textBoxSearching
             // 
-            this.listBoxFiles.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.listBoxFiles.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.listBoxFiles.ForeColor = System.Drawing.Color.White;
-            this.listBoxFiles.FormattingEnabled = true;
-            this.listBoxFiles.ItemHeight = 31;
-            this.listBoxFiles.Location = new System.Drawing.Point(15, 79);
-            this.listBoxFiles.Name = "listBoxFiles";
-            this.listBoxFiles.Size = new System.Drawing.Size(624, 314);
-            this.listBoxFiles.TabIndex = 0;
-            this.listBoxFiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxFiles_MouseDoubleClick);
-            // 
-            // textBoxFileWay
-            // 
-            this.textBoxFileWay.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxFileWay.Location = new System.Drawing.Point(15, 28);
-            this.textBoxFileWay.Name = "textBoxFileWay";
-            this.textBoxFileWay.Size = new System.Drawing.Size(624, 38);
-            this.textBoxFileWay.TabIndex = 2;
+            this.textBoxSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxSearching.Location = new System.Drawing.Point(15, 28);
+            this.textBoxSearching.Name = "textBoxSearching";
+            this.textBoxSearching.Size = new System.Drawing.Size(605, 38);
+            this.textBoxSearching.TabIndex = 2;
             // 
             // comboBoxTheme
             // 
@@ -74,10 +60,10 @@
             this.comboBoxTheme.FormattingEnabled = true;
             this.comboBoxTheme.Items.AddRange(new object[] {
             "Розовый минимализм",
-            "Белый пушистик",
-            "Жемчуг",
-            "Сверкающий алмаз",
-            "Ночная птица"});
+            "Бумага",
+            "Письма",
+            "Книги",
+            "Дождь"});
             this.comboBoxTheme.Location = new System.Drawing.Point(15, 438);
             this.comboBoxTheme.Name = "comboBoxTheme";
             this.comboBoxTheme.Size = new System.Drawing.Size(200, 39);
@@ -99,7 +85,7 @@
             // 
             this.labelFont.AutoSize = true;
             this.labelFont.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelFont.Location = new System.Drawing.Point(221, 403);
+            this.labelFont.Location = new System.Drawing.Point(272, 403);
             this.labelFont.Name = "labelFont";
             this.labelFont.Size = new System.Drawing.Size(106, 32);
             this.labelFont.TabIndex = 15;
@@ -109,7 +95,7 @@
             // 
             this.labelTextSize.AutoSize = true;
             this.labelTextSize.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.labelTextSize.Location = new System.Drawing.Point(439, 403);
+            this.labelTextSize.Location = new System.Drawing.Point(526, 403);
             this.labelTextSize.Name = "labelTextSize";
             this.labelTextSize.Size = new System.Drawing.Size(208, 32);
             this.labelTextSize.TabIndex = 16;
@@ -125,7 +111,7 @@
             "Impact",
             "Monotype Corsiva",
             "Times New Roman"});
-            this.comboBoxFont.Location = new System.Drawing.Point(227, 438);
+            this.comboBoxFont.Location = new System.Drawing.Point(278, 438);
             this.comboBoxFont.Name = "comboBoxFont";
             this.comboBoxFont.Size = new System.Drawing.Size(200, 39);
             this.comboBoxFont.TabIndex = 18;
@@ -142,109 +128,74 @@
             "11",
             "12",
             "14"});
-            this.comboBoxTextSize.Location = new System.Drawing.Point(439, 438);
+            this.comboBoxTextSize.Location = new System.Drawing.Point(532, 438);
             this.comboBoxTextSize.Name = "comboBoxTextSize";
             this.comboBoxTextSize.Size = new System.Drawing.Size(200, 39);
             this.comboBoxTextSize.TabIndex = 19;
             this.comboBoxTextSize.SelectedIndexChanged += new System.EventHandler(this.comboBoxTextSize_SelectedIndexChanged);
             // 
-            // buttonNewFolder
-            // 
-            this.buttonNewFolder.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonNewFolder.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_новая_папка;
-            this.buttonNewFolder.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonNewFolder.Location = new System.Drawing.Point(663, 303);
-            this.buttonNewFolder.Name = "buttonNewFolder";
-            this.buttonNewFolder.Size = new System.Drawing.Size(50, 50);
-            this.buttonNewFolder.TabIndex = 24;
-            this.buttonNewFolder.UseVisualStyleBackColor = false;
-            this.buttonNewFolder.Click += new System.EventHandler(this.buttonNewFolder_Click);
-            // 
-            // buttonNewFile
-            // 
-            this.buttonNewFile.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonNewFile.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_новый_файл;
-            this.buttonNewFile.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonNewFile.Location = new System.Drawing.Point(663, 359);
-            this.buttonNewFile.Name = "buttonNewFile";
-            this.buttonNewFile.Size = new System.Drawing.Size(50, 50);
-            this.buttonNewFile.TabIndex = 23;
-            this.buttonNewFile.UseVisualStyleBackColor = false;
-            this.buttonNewFile.Click += new System.EventHandler(this.buttonNewFile_Click);
-            // 
-            // buttonDelete
-            // 
-            this.buttonDelete.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonDelete.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_удалить;
-            this.buttonDelete.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonDelete.Location = new System.Drawing.Point(663, 415);
-            this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(50, 50);
-            this.buttonDelete.TabIndex = 11;
-            this.buttonDelete.UseVisualStyleBackColor = false;
-            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
-            // 
-            // buttonRename
-            // 
-            this.buttonRename.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonRename.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_переименовать;
-            this.buttonRename.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonRename.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonRename.Location = new System.Drawing.Point(663, 79);
-            this.buttonRename.Name = "buttonRename";
-            this.buttonRename.Size = new System.Drawing.Size(50, 50);
-            this.buttonRename.TabIndex = 10;
-            this.buttonRename.UseVisualStyleBackColor = false;
-            this.buttonRename.Click += new System.EventHandler(this.buttonRename_Click);
-            // 
-            // buttonMove
-            // 
-            this.buttonMove.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonMove.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_переместить;
-            this.buttonMove.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonMove.Location = new System.Drawing.Point(663, 135);
-            this.buttonMove.Name = "buttonMove";
-            this.buttonMove.Size = new System.Drawing.Size(50, 50);
-            this.buttonMove.TabIndex = 9;
-            this.buttonMove.UseVisualStyleBackColor = false;
-            this.buttonMove.Click += new System.EventHandler(this.buttonMove_Click);
-            // 
-            // buttonCopy
-            // 
-            this.buttonCopy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonCopy.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_копировать;
-            this.buttonCopy.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonCopy.Location = new System.Drawing.Point(663, 191);
-            this.buttonCopy.Name = "buttonCopy";
-            this.buttonCopy.Size = new System.Drawing.Size(50, 50);
-            this.buttonCopy.TabIndex = 8;
-            this.buttonCopy.UseVisualStyleBackColor = false;
-            this.buttonCopy.Click += new System.EventHandler(this.buttonCopy_Click);
-            // 
-            // buttonArchieve
-            // 
-            this.buttonArchieve.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.buttonArchieve.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_архивировать;
-            this.buttonArchieve.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonArchieve.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.buttonArchieve.Location = new System.Drawing.Point(663, 247);
-            this.buttonArchieve.Name = "buttonArchieve";
-            this.buttonArchieve.Size = new System.Drawing.Size(50, 50);
-            this.buttonArchieve.TabIndex = 7;
-            this.buttonArchieve.UseVisualStyleBackColor = false;
-            this.buttonArchieve.Click += new System.EventHandler(this.buttonArchieve_Click);
-            // 
             // buttonSearch
             // 
             this.buttonSearch.BackColor = System.Drawing.Color.White;
-            this.buttonSearch.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_найти;
             this.buttonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonSearch.Location = new System.Drawing.Point(663, 23);
+            this.buttonSearch.Location = new System.Drawing.Point(682, 27);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(50, 50);
             this.buttonSearch.TabIndex = 3;
             this.buttonSearch.UseVisualStyleBackColor = false;
             this.buttonSearch.Click += new System.EventHandler(this.buttonSearch_Click);
+            // 
+            // listViewBooks
+            // 
+            this.listViewBooks.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnBookName,
+            this.columnAuthor,
+            this.columnRating,
+            this.columnData,
+            this.columnPrice});
+            this.listViewBooks.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.listViewBooks.HideSelection = false;
+            this.listViewBooks.Location = new System.Drawing.Point(15, 87);
+            this.listViewBooks.Name = "listViewBooks";
+            this.listViewBooks.Size = new System.Drawing.Size(717, 298);
+            this.listViewBooks.TabIndex = 20;
+            this.listViewBooks.UseCompatibleStateImageBehavior = false;
+            this.listViewBooks.View = System.Windows.Forms.View.Details;
+            this.listViewBooks.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listViewBooks_ColumnClick);
+            this.listViewBooks.DoubleClick += new System.EventHandler(this.listViewBooks_DoubleClick);
+            // 
+            // columnBookName
+            // 
+            this.columnBookName.Text = "Название книги";
+            this.columnBookName.Width = 300;
+            // 
+            // columnAuthor
+            // 
+            this.columnAuthor.Text = "Автор";
+            this.columnAuthor.Width = 150;
+            // 
+            // columnRating
+            // 
+            this.columnRating.Text = "Рейтинг";
+            this.columnRating.Width = 75;
+            // 
+            // columnData
+            // 
+            this.columnData.Text = "Дата выпуска";
+            this.columnData.Width = 110;
+            // 
+            // columnPrice
+            // 
+            this.columnPrice.Text = "Цена";
+            this.columnPrice.Width = 75;
+            // 
+            // textBoxBooksOnPage
+            // 
+            this.textBoxBooksOnPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBoxBooksOnPage.Location = new System.Drawing.Point(626, 28);
+            this.textBoxBooksOnPage.Name = "textBoxBooksOnPage";
+            this.textBoxBooksOnPage.Size = new System.Drawing.Size(50, 38);
+            this.textBoxBooksOnPage.TabIndex = 21;
             // 
             // MainForm
             // 
@@ -254,25 +205,19 @@
             this.BackgroundImage = global::Файловый_менеджер.Properties.Resources.светло_розовый_фон;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(801, 528);
-            this.Controls.Add(this.buttonNewFolder);
-            this.Controls.Add(this.buttonNewFile);
+            this.Controls.Add(this.textBoxBooksOnPage);
+            this.Controls.Add(this.listViewBooks);
             this.Controls.Add(this.comboBoxTextSize);
             this.Controls.Add(this.comboBoxFont);
             this.Controls.Add(this.labelTextSize);
             this.Controls.Add(this.labelFont);
             this.Controls.Add(this.labelTheme);
             this.Controls.Add(this.comboBoxTheme);
-            this.Controls.Add(this.buttonDelete);
-            this.Controls.Add(this.buttonRename);
-            this.Controls.Add(this.buttonMove);
-            this.Controls.Add(this.buttonCopy);
-            this.Controls.Add(this.buttonArchieve);
             this.Controls.Add(this.buttonSearch);
-            this.Controls.Add(this.textBoxFileWay);
-            this.Controls.Add(this.listBoxFiles);
+            this.Controls.Add(this.textBoxSearching);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "Гламурный файловый менеджер";
+            this.Text = "Книжный менеджер";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -280,23 +225,21 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ListBox listBoxFiles;
-        private System.Windows.Forms.TextBox textBoxFileWay;
+        private System.Windows.Forms.TextBox textBoxSearching;
         private System.Windows.Forms.Button buttonSearch;
-        private System.Windows.Forms.Button buttonArchieve;
-        private System.Windows.Forms.Button buttonCopy;
-        private System.Windows.Forms.Button buttonMove;
-        private System.Windows.Forms.Button buttonRename;
-        private System.Windows.Forms.Button buttonDelete;
         private System.Windows.Forms.ComboBox comboBoxTheme;
         private System.Windows.Forms.Label labelTheme;
         private System.Windows.Forms.Label labelFont;
         private System.Windows.Forms.Label labelTextSize;
         private System.Windows.Forms.ComboBox comboBoxFont;
         private System.Windows.Forms.ComboBox comboBoxTextSize;
-        private System.Windows.Forms.Button buttonNewFile;
-        private System.Windows.Forms.Button buttonNewFolder;
+        private System.Windows.Forms.ListView listViewBooks;
+        public System.Windows.Forms.ColumnHeader columnBookName;
+        private System.Windows.Forms.ColumnHeader columnAuthor;
+        private System.Windows.Forms.ColumnHeader columnRating;
+        private System.Windows.Forms.ColumnHeader columnData;
+        private System.Windows.Forms.ColumnHeader columnPrice;
+        private System.Windows.Forms.TextBox textBoxBooksOnPage;
     }
 }
 
