@@ -137,6 +137,7 @@
             // buttonSearch
             // 
             this.buttonSearch.BackColor = System.Drawing.Color.White;
+            this.buttonSearch.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_найти;
             this.buttonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.buttonSearch.Location = new System.Drawing.Point(682, 27);
             this.buttonSearch.Name = "buttonSearch";

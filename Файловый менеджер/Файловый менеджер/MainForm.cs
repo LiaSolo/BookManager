@@ -20,7 +20,7 @@ namespace Файловый_менеджер
 { 
     public partial class MainForm : Form
     {
-        Dictionary<string, string> books; //зачем и почему словарь?
+        Dictionary<string, string> books;
         ColumnSorter columnSorter;
         int numberCurrentPage = 1;
         
@@ -139,15 +139,19 @@ namespace Файловый_менеджер
         }
         #endregion
 
-        //всё это надо понять, пусть миша объясняет
+        //почему ломается переход на страницу?
+        //разобрать сортировку колонок
+        //удалить ненужное
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             string adress = @"https://www.amazon.com/s?k=" + textBoxSearching.Text 
                 + "&i=stripbooks-intl-ship&ref=nb_sb_noss";
+
+        //https://www.amazon.com/s?k=вий&i=stripbooks-intl-ship&ref=nb_sb_noss
             WebClient webClient = new WebClient();
             webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-            string s = webClient.DownloadString(adress);
+            string p = webClient.DownloadString(adress);
 
             int countBooks;
 
@@ -159,61 +163,78 @@ namespace Файловый_менеджер
             {
                 countBooks = 10;
             }
-
-            Regex regexAuthor = new Regex("<a class=\"a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style\" href=\"(.*?)\">(.*?)</a>");
-
+           
             listViewBooks.Items.Clear();
             books = new Dictionary<string, string>();
-            BooksParse(s, countBooks);
+            BooksParse(p, countBooks);
         }
 
         //ничего непонятно, пусть миша объясняет + сортировку лист вью
-        internal void BooksParse(string page, int leftNumberBooks)
+        internal void BooksParse(string page, int lastBookNumber)
         {
-            string[] numberBooksOnPage = Regex.Matches(page, "span>(.*?) of ")[0].Groups[1].Value.Split('-');
+
+            string[] numberBooksOnPage = new string[2]; //[2]
+            try
+            {
+                numberBooksOnPage = Regex.Matches(page, "span>(.*?) of ")[0].Groups[1].Value.Split('-');
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Ничего не найдено:(");
+                return;
+            }
             int numberOfElement = int.Parse(numberBooksOnPage[1]) - int.Parse(numberBooksOnPage[0]) + 1;
 
-            if (numberOfElement < 0) { MessageBox.Show("Найденнок количество книг меньше, чем указанное.\n Выведены все найденные книги по запросу"); return; }
+            if (numberOfElement <=0) 
+            { 
+                MessageBox.Show("Выведены все найденные книги"); 
+                return; 
+            }
 
+            //Regex regexAuthor = new Regex("<a class=\"a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style\" href=\"(.*?)\">(.*?)</a>");
             Regex regexName = new Regex("<span class=\"a-size-medium a-color-base a-text-normal\">(.*?)</span>");
-            Regex regexLink = new Regex("<a class=\"a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal\" href=\"(.*?)>");
+            //Regex regexLink = new Regex("<a class=\"a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal\" href=\"(.*?)>");
             Regex regexRating = new Regex("icon-alt\">(.*?) out of 5");
-            Regex regexBlock = new Regex("a-section a-spacing-none s-padding-right-small s-title-instructions-style\">(.*?)\"a-row a-size-base a-color-secondary s-align-children-center");
+            Regex regexHeadBlock = new Regex("a-section a-spacing-none s-padding-right-small s-title-instructions-style\">(.*?)\"a-row a-size-base a-color-secondary s-align-children-center");
             Regex regexData = new Regex("a-size-base a-color-secondary a-text-normal\">(.*?)</span>");
+
+            //есть авторы с ссылками на их страницы, а есть без
             Regex regexAuthorWithHref = new Regex("a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style\" href=\"(.*?)\">(.*?)</a>");
             Regex regexAuthorWithoutHref = new Regex("class=\"a-size-base\">(.*?)</span>");
             Regex regexPrice = new Regex("a-price-whole\">(.*?)<span");
 
-            MatchCollection mac = regexBlock.Matches(page);
-            foreach (Match item in mac)
+            //в заглавном блоке находятся название книги, автор, дата и рейтинг
+            MatchCollection headBlockMatchCollection = regexHeadBlock.Matches(page);
+            foreach (Match item in headBlockMatchCollection)
             {
-                if (leftNumberBooks <= 0) return;
-                MatchCollection matches = regexName.Matches(item.Groups[1].Value.Replace("&#x27", ""));
+               //f (leftNumberBooks <= 0) return;
+                MatchCollection matches = regexName.Matches(item.Groups[1].Value.Replace("&#x27", "")); //matchesName
                 var listitem = new ListViewItem(matches[0].Groups[1].Value);
 
-                MatchCollection matchesLink = regexLink.Matches(item.Groups[1].Value);
-                try
-                {
-                    books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
-                }
-                catch (Exception ex) { }
+                //ссылка на книгу?
+                //MatchCollection matchesLink = regexLink.Matches(item.Groups[1].Value);
+                //try
+                //{
+                //    books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
+                //}
+                //catch (Exception ex) { }
 
-
-
-                MatchCollection matchesAuthor_Href = regexAuthorWithHref.Matches(item.Groups[1].Value);
-                MatchCollection matchesAuthor = regexAuthorWithoutHref.Matches(item.Groups[1].Value);
+                MatchCollection matchesAuthorHref = regexAuthorWithHref.Matches(item.Groups[1].Value); 
+                MatchCollection matchesAuthorNoHref = regexAuthorWithoutHref.Matches(item.Groups[1].Value); 
                 string authors = "";
-                if (matchesAuthor.Count > 1)
+
+                //если у книги несколько авторов
+                if (matchesAuthorNoHref.Count > 1)
                 {
-                    foreach (Match mc in matchesAuthor)
+                    foreach (Match mc in matchesAuthorNoHref)
                     {
                         authors += mc.Groups[1].Value + " ";
                     }
                 }
 
-                if (matchesAuthor_Href.Count > 0)
+                if (matchesAuthorHref.Count > 0)
                 {
-                    foreach (Match mc in matchesAuthor_Href)
+                    foreach (Match mc in matchesAuthorHref)
                     {
                         authors += mc.Groups[2].Value + " ";
                     }
@@ -225,35 +246,28 @@ namespace Файловый_менеджер
                 authors = authors.Trim(' ');
                 listitem.SubItems.Add(authors);
 
-                matches = regexData.Matches(item.Groups[1].Value);
-                if (matches.Count == 0)
-                {
-                    listitem.SubItems.Add("None");
-                }
+                matches = regexRating.Matches(item.Groups[1].Value);
+                if (matches.Count == 0) listitem.SubItems.Add("None");
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
-                matches = regexRating.Matches(item.Groups[1].Value);
-                if (matches.Count == 0)
-                {
-                    listitem.SubItems.Add("None");
-                }
+                matches = regexData.Matches(item.Groups[1].Value);
+                if (matches.Count == 0) listitem.SubItems.Add("None");
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
                 matches = regexPrice.Matches(item.Groups[1].Value);
-                if (matches.Count == 0)
-                {
-                    listitem.SubItems.Add("None");
-                }
+                if (matches.Count == 0) listitem.SubItems.Add("None");
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
-
                 listViewBooks.Items.Add(listitem);
-                leftNumberBooks--;
-
+                lastBookNumber--;
+                if (lastBookNumber == 0) return;
             }
-            var wc = new WebClient();
-            wc.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-            BooksParse(wc.DownloadString("https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString()), leftNumberBooks);
+
+            //переход на следующую страницу при необходимости
+            WebClient webClient = new WebClient();
+            webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");           
+            page = webClient.DownloadString("https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString());
+            BooksParse(page, lastBookNumber);
         }
 
         //при двойном щелчке переходит по ссылке в интернет на страничку книги
@@ -263,10 +277,13 @@ namespace Файловый_менеджер
             try
             {
                 var x = listViewBooks.Items[indexes[0]].Text;
-                Process.Start(new ProcessStartInfo("https://www.amazon.com/" + $"{books[listViewBooks.Items[indexes[0]].Text]}") { UseShellExecute = true });
-
+                Process.Start(new ProcessStartInfo("https://www.amazon.com/" + 
+                    $"{books[listViewBooks.Items[indexes[0]].Text]}"));
             }
-            catch (Exception ex) { }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Что-то пошло не так :(");
+            }
         }
         
         
@@ -282,6 +299,7 @@ namespace Файловый_менеджер
             Application.Exit();
         }
 
+        //сортировка при нажатии на колонку
         private void listViewBooks_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             listViewBooks.ListViewItemSorter = columnSorter;
