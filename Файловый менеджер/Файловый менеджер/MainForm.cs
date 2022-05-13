@@ -144,14 +144,9 @@ namespace Файловый_менеджер
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            string adress = @"https://www.amazon.com/s?k=" + textBoxSearching.Text 
+            string adress = @"https://www.amazon.com/s?k=" + textBoxSearching.Text
                 + "&i=stripbooks-intl-ship&ref=nb_sb_noss";
-
-        //https://www.amazon.com/s?k=вий&i=stripbooks-intl-ship&ref=nb_sb_noss
-            WebClient webClient = new WebClient();
-            webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-            webClient.Encoding = Encoding.UTF8;
-            string p = webClient.DownloadString(adress);
+            //https://www.amazon.com/s?k=вий&i=stripbooks-intl-ship&ref=nb_sb_noss
 
             int countBooks;
 
@@ -166,11 +161,15 @@ namespace Файловый_менеджер
            
             listViewBooks.Items.Clear();
             books = new Dictionary<string, string>();
-            BooksParse(p, countBooks);
+            BooksParse(adress, countBooks);
         }
 
-        internal void BooksParse(string page, int lastBookNumber)
+        internal void BooksParse(string adress, int lastBookNumber)
         {
+            WebClient webClient = new WebClient();
+            webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
+            webClient.Encoding = Encoding.UTF8;
+            string page = webClient.DownloadString(adress);
 
             string[] numberBooksOnPage = new string[2]; //[2]
             try
@@ -261,10 +260,8 @@ namespace Файловый_менеджер
             }
 
             //переход на следующую страницу при необходимости
-            WebClient webClient = new WebClient();
-            webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");           
-            page = webClient.DownloadString("https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString());
-            BooksParse(page, lastBookNumber);
+            string nextAdress = "https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString();
+            BooksParse(nextAdress, lastBookNumber);
         }
 
         //при двойном щелчке переходит по ссылке в интернет на страничку книги
