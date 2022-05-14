@@ -11,10 +11,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Drawing;
 using System.Text.RegularExpressions;
-
-
-
-
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Файловый_менеджер
 { 
@@ -139,14 +137,10 @@ namespace Файловый_менеджер
         }
         #endregion
 
-        //разобрать сортировку колонок
-        //удалить ненужное
-
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            string adress = @"https://www.amazon.com/s?k=" + textBoxSearching.Text
+            string adress = "https://www.amazon.com/s?k=" + textBoxSearching.Text
                 + "&i=stripbooks-intl-ship&ref=nb_sb_noss";
-            //https://www.amazon.com/s?k=вий&i=stripbooks-intl-ship&ref=nb_sb_noss
 
             int countBooks;
 
@@ -161,17 +155,17 @@ namespace Файловый_менеджер
            
             listViewBooks.Items.Clear();
             books = new Dictionary<string, string>();
-            BooksParse(adress, countBooks);
+            BooksParseAsync(adress, countBooks);
         }
 
-        internal void BooksParse(string adress, int lastBookNumber)
+        internal void BooksParseAsync(string adress, int lastBookNumber)
         {
             WebClient webClient = new WebClient();
             webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
             webClient.Encoding = Encoding.UTF8;
             string page = webClient.DownloadString(adress);
 
-            string[] numberBooksOnPage = new string[2]; //[2]
+            string[] numberBooksOnPage = new string[2]; 
             try
             {
                 numberBooksOnPage = Regex.Matches(page, "span>(.*?) of ")[0].Groups[1].Value.Split('-');
@@ -207,7 +201,7 @@ namespace Файловый_менеджер
                 MatchCollection matches = regexName.Matches(item.Groups[1].Value.Replace("&#x27", ""));
                 ListViewItem listitem = new ListViewItem(matches[0].Groups[1].Value);
 
-                //ссылка на книгу?
+                //ссылка на книгу
                 MatchCollection matchesLink = regexLink.Matches(item.Groups[1].Value);
                 try
                 {
@@ -261,7 +255,7 @@ namespace Файловый_менеджер
 
             //переход на следующую страницу при необходимости
             string nextAdress = "https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString();
-            BooksParse(nextAdress, lastBookNumber);
+            BooksParseAsync(nextAdress, lastBookNumber);
         }
 
         //при двойном щелчке переходит по ссылке в интернет на страничку книги
@@ -299,15 +293,14 @@ namespace Файловый_менеджер
             listViewBooks.ListViewItemSorter = columnSorter;
             if (e.Column == columnSorter.SortedColumn)
             {
-                columnSorter.Order = SortOrder.Ascending; //по возрастанию
-                //if (columnSorter.Order == SortOrder.Ascending)
-                //{
-                //    columnSorter.Order = SortOrder.Descending;
-                //}
-                //else
-                //{
-                //    columnSorter.Order = SortOrder.Ascending;
-                //}
+                if (columnSorter.Order == SortOrder.Ascending) //если уже по возрастанию
+                {
+                    columnSorter.Order = SortOrder.Descending;
+                }
+                else //если уже по убыванию или никак
+                {
+                    columnSorter.Order = SortOrder.Ascending;
+                }
             }
             else
             {

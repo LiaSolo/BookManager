@@ -37,7 +37,7 @@ namespace Файловый_менеджер
                 itemY.SubItems[currentColumn].Text);
 
             if (sortOrder == SortOrder.Ascending) return result;
-            //if (sortOrder == SortOrder.Descending) return -result;
+            if (sortOrder == SortOrder.Descending) return -result;
             return 0;
         }
     }

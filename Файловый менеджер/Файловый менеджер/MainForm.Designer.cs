@@ -48,6 +48,17 @@
             // 
             // textBoxSearching
             // 
+            this.textBoxSearching.AutoCompleteCustomSource.AddRange(new string[] {
+            "python",
+            "c#",
+            "f#",
+            "c++",
+            "ruby",
+            "pascal",
+            "java",
+            "haskell"});
+            this.textBoxSearching.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxSearching.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxSearching.Location = new System.Drawing.Point(15, 28);
             this.textBoxSearching.Name = "textBoxSearching";
