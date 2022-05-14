@@ -142,6 +142,8 @@ namespace Файловый_менеджер
             string adress = "https://www.amazon.com/s?k=" + textBoxSearching.Text
                 + "&i=stripbooks-intl-ship&ref=nb_sb_noss";
 
+            //"https://www.amazon.com/s?k=вино из одуванчиков&i=stripbooks-intl-ship&ref=nb_sb_noss";
+
             int countBooks;
 
             try
@@ -154,33 +156,50 @@ namespace Файловый_менеджер
             }
            
             listViewBooks.Items.Clear();
-            books = new Dictionary<string, string>();
-            BooksParseAsync(adress, countBooks);
+            books = new Dictionary<string, string>();         
+ 
+            BooksParse(adress, countBooks);
         }
 
-        internal void BooksParseAsync(string adress, int lastBookNumber)
+        //<div class="a-section a-spacing-small a-spacing-top-small">
+        //        <span>5 results for</span><span> </span><span class="a-color-state a-text-bold">"вино из одуванчиков"</span>
+
+        internal void BooksParse(string adress, int lastBookNumber)
         {
             WebClient webClient = new WebClient();
             webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
             webClient.Encoding = Encoding.UTF8;
             string page = webClient.DownloadString(adress);
 
-            string[] numberBooksOnPage = new string[2]; 
+            string[] numberBooksOnPage; // = new string[2];
+            int numberOfElements;
+
             try
             {
-                numberBooksOnPage = Regex.Matches(page, "span>(.*?) of ")[0].Groups[1].Value.Split('-');
+                numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
             }
-            catch (Exception ex) 
+            catch(Exception)
             {
-                MessageBox.Show("Ничего не найдено:(");
-                return;
+                try
+                {
+                    numberBooksOnPage = new string[2];
+                    numberBooksOnPage[0] = "1";
+                    numberBooksOnPage[1] = Regex.Matches(page, "<span>(.*?) results for")[0].Groups[1].Value;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Я испахабил код страницы или ничего не нашёл");
+                    return;
+                }    
             }
-            int numberOfElement = int.Parse(numberBooksOnPage[1]) - int.Parse(numberBooksOnPage[0]) + 1;
 
-            if (numberOfElement <=0) 
-            { 
-                MessageBox.Show("Выведены все найденные книги"); 
-                return; 
+            numberOfElements = int.Parse(numberBooksOnPage[1])
+                - int.Parse(numberBooksOnPage[0]) + 1;
+            if (numberOfElements < lastBookNumber && numberOfElements < 16)
+            {
+                MessageBox.Show("Выведены все найденные книги:" 
+                    + numberOfElements.ToString());
+                lastBookNumber = numberOfElements;
             }
 
             Regex regexName = new Regex("<span class=\"a-size-medium a-color-base a-text-normal\">(.*?)</span>");
@@ -255,7 +274,7 @@ namespace Файловый_менеджер
 
             //переход на следующую страницу при необходимости
             string nextAdress = "https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString();
-            BooksParseAsync(nextAdress, lastBookNumber);
+            BooksParse(nextAdress, lastBookNumber);
         }
 
         //при двойном щелчке переходит по ссылке в интернет на страничку книги
