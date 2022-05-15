@@ -50,19 +50,27 @@
             // 
             this.textBoxSearching.AutoCompleteCustomSource.AddRange(new string[] {
             "python",
-            "c#",
-            "f#",
-            "c++",
+            "c",
+            "c sharp",
+            "f sharp",
+            "sql",
             "ruby",
             "pascal",
             "java",
-            "haskell"});
+            "haskell",
+            "kotlin",
+            "delphi",
+            "basic",
+            "perl",
+            "julia",
+            "fortran",
+            "lua"});
             this.textBoxSearching.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.textBoxSearching.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxSearching.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.textBoxSearching.Location = new System.Drawing.Point(15, 28);
             this.textBoxSearching.Name = "textBoxSearching";
-            this.textBoxSearching.Size = new System.Drawing.Size(605, 38);
+            this.textBoxSearching.Size = new System.Drawing.Size(607, 38);
             this.textBoxSearching.TabIndex = 2;
             // 
             // comboBoxTheme
@@ -150,7 +158,7 @@
             this.buttonSearch.BackColor = System.Drawing.Color.White;
             this.buttonSearch.BackgroundImage = global::Файловый_менеджер.Properties.Resources.значок_найти;
             this.buttonSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.buttonSearch.Location = new System.Drawing.Point(682, 27);
+            this.buttonSearch.Location = new System.Drawing.Point(684, 28);
             this.buttonSearch.Name = "buttonSearch";
             this.buttonSearch.Size = new System.Drawing.Size(50, 50);
             this.buttonSearch.TabIndex = 3;
@@ -179,12 +187,12 @@
             // columnBookName
             // 
             this.columnBookName.Text = "Название книги";
-            this.columnBookName.Width = 300;
+            this.columnBookName.Width = 220;
             // 
             // columnAuthor
             // 
             this.columnAuthor.Text = "Автор";
-            this.columnAuthor.Width = 150;
+            this.columnAuthor.Width = 100;
             // 
             // columnRating
             // 
@@ -194,17 +202,17 @@
             // columnData
             // 
             this.columnData.Text = "Дата выпуска";
-            this.columnData.Width = 110;
+            this.columnData.Width = 100;
             // 
             // columnPrice
             // 
             this.columnPrice.Text = "Цена";
-            this.columnPrice.Width = 75;
+            this.columnPrice.Width = 50;
             // 
             // textBoxBooksOnPage
             // 
             this.textBoxBooksOnPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.textBoxBooksOnPage.Location = new System.Drawing.Point(626, 28);
+            this.textBoxBooksOnPage.Location = new System.Drawing.Point(628, 29);
             this.textBoxBooksOnPage.Name = "textBoxBooksOnPage";
             this.textBoxBooksOnPage.Size = new System.Drawing.Size(50, 38);
             this.textBoxBooksOnPage.TabIndex = 21;
@@ -216,7 +224,7 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
             this.BackgroundImage = global::Файловый_менеджер.Properties.Resources.светло_розовый_фон;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(801, 528);
+            this.ClientSize = new System.Drawing.Size(823, 528);
             this.Controls.Add(this.textBoxBooksOnPage);
             this.Controls.Add(this.listViewBooks);
             this.Controls.Add(this.comboBoxTextSize);

@@ -166,36 +166,27 @@ namespace Файловый_менеджер
 
         {
 
-            //зависает
-
+            
 
             WebClient webClient = new WebClient();
             string page;
 
             try
             {
+                webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
+                webClient.Encoding = Encoding.UTF8;
+                page = webClient.DownloadString(adress);
+
+                //строчка для проверки кракозябр
+                string[] numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
+            }
+            catch (Exception)
+            {
+
                 webClient.Headers[HttpRequestHeader.AcceptCharset] = "gzip";
                 GZipStream responseStream = new GZipStream(webClient.OpenRead(adress), CompressionMode.Decompress);
                 StreamReader reader = new StreamReader(responseStream);
                 page = reader.ReadToEnd();
-            }
-            catch (Exception)
-            {
-                webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-                webClient.Encoding = Encoding.UTF8;
-                page = webClient.DownloadString(adress);
-            }
-
-            string[] numberBooksOnPage;
-
-            try
-            {
-                numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
-            }
-            catch(Exception)
-            {
-                MessageBox.Show("Я испахабил код страницы или ничего не нашёл");
-                return;
             }
 
             Regex regexName = new Regex("<span class=\"a-size-medium a-color-base a-text-normal\">(.*?)</span>");
