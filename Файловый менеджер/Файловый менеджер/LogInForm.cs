@@ -23,7 +23,7 @@ namespace Файловый_менеджер
                     authorization = (Authorization)formatter.Deserialize(configs);
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception) { }
         }
 
         //регистрация нового пользователя (но прошлый теряется), все настройки скинуты до дефолтныых

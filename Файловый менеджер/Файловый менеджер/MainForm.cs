@@ -13,6 +13,7 @@ using System.Drawing;
 using System.Text.RegularExpressions;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.IO.Compression;
 
 namespace Файловый_менеджер
 { 
@@ -150,7 +151,7 @@ namespace Файловый_менеджер
             {
                 countBooks = int.Parse(textBoxBooksOnPage.Text);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 countBooks = 10;
             }
@@ -162,17 +163,30 @@ namespace Файловый_менеджер
         }
 
         internal void BooksParse(string adress, int lastBookNumber)
+
         {
 
-            //кодировка лагает
+            //зависает
 
 
             WebClient webClient = new WebClient();
-            webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
-            webClient.Encoding = Encoding.UTF8;
-            string page = webClient.DownloadString(adress);
+            string page;
 
-            string[] numberBooksOnPage; // = new string[2];
+            try
+            {
+                webClient.Headers[HttpRequestHeader.AcceptCharset] = "gzip";
+                GZipStream responseStream = new GZipStream(webClient.OpenRead(adress), CompressionMode.Decompress);
+                StreamReader reader = new StreamReader(responseStream);
+                page = reader.ReadToEnd();
+            }
+            catch (Exception)
+            {
+                webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
+                webClient.Encoding = Encoding.UTF8;
+                page = webClient.DownloadString(adress);
+            }
+
+            string[] numberBooksOnPage;
 
             try
             {
@@ -209,7 +223,7 @@ namespace Файловый_менеджер
                 {
                     books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
                 }
-                catch (Exception ex) { }
+                catch (Exception) { }
 
                 MatchCollection matchesAuthorHref = regexAuthorWithHref.Matches(item.Groups[1].Value); 
                 MatchCollection matchesAuthorNoHref = regexAuthorWithoutHref.Matches(item.Groups[1].Value); 
@@ -271,7 +285,7 @@ namespace Файловый_менеджер
                 Process.Start(new ProcessStartInfo("https://www.amazon.com/" + 
                     $"{books[listViewBooks.Items[indexes[0]].Text]}"));
             }
-            catch (Exception ex) 
+            catch (Exception) 
             {
                 MessageBox.Show("Что-то пошло не так :(");
             }
