@@ -173,42 +173,22 @@ namespace Файловый_менеджер
             string page = webClient.DownloadString(adress);
 
             string[] numberBooksOnPage; // = new string[2];
-            int numberOfElements;
 
             try
             {
-                
-                numberBooksOnPage = new string[2];
-                numberBooksOnPage[0] = "1";
-                numberBooksOnPage[1] = Regex.Matches(page, "<span>(.*?) results for")[0].Groups[1].Value;
+                numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
             }
             catch(Exception)
             {
-                try
-                {
-                    numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Я испахабил код страницы или ничего не нашёл");
-                    return;
-                }    
-            }
-
-            numberOfElements = int.Parse(numberBooksOnPage[1])
-                - int.Parse(numberBooksOnPage[0]) + 1;
-            if (numberOfElements < lastBookNumber && numberOfElements < 16)
-            {
-                MessageBox.Show("Выведены все найденные книги:" 
-                    + numberOfElements.ToString());
-                lastBookNumber = numberOfElements;
+                MessageBox.Show("Я испахабил код страницы или ничего не нашёл");
+                return;
             }
 
             Regex regexName = new Regex("<span class=\"a-size-medium a-color-base a-text-normal\">(.*?)</span>");
             Regex regexLink = new Regex("<a class=\"a-link-normal s-underline-text s-underline-link-text s-link-style a-text-normal\" href=\"(.*?)>");
             Regex regexRating = new Regex("icon-alt\">(.*?) out of 5");
             Regex regexHeadBlock = new Regex("a-section a-spacing-none s-padding-right-small s-title-instructions-style\">(.*?)\"a-row a-size-base a-color-secondary s-align-children-center");
-            Regex regexData = new Regex("a-size-base a-color-secondary a-text-normal\">(.*?)</span>");
+            Regex regexDate = new Regex("a-size-base a-color-secondary a-text-normal\">(.*?)</span>");
 
             //есть авторы с ссылками на их страницы, а есть без
             Regex regexAuthorWithHref = new Regex("a-size-base a-link-normal s-underline-text s-underline-link-text s-link-style\" href=\"(.*?)\">(.*?)</a>");
@@ -219,7 +199,7 @@ namespace Файловый_менеджер
             MatchCollection headBlockMatchCollection = regexHeadBlock.Matches(page);
             foreach (Match item in headBlockMatchCollection)
             {
-                lastBookNumber--;
+                
                 MatchCollection matches = regexName.Matches(item.Groups[1].Value.Replace("&#x27", ""));
                 ListViewItem listitem = new ListViewItem(matches[0].Groups[1].Value);
 
@@ -262,7 +242,7 @@ namespace Файловый_менеджер
                 if (matches.Count == 0) listitem.SubItems.Add("None");
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
-                matches = regexData.Matches(item.Groups[1].Value);
+                matches = regexDate.Matches(item.Groups[1].Value);
                 if (matches.Count == 0) listitem.SubItems.Add("None");
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
@@ -271,11 +251,10 @@ namespace Файловый_менеджер
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
                 listViewBooks.Items.Add(listitem);
-                
-                
-            }
 
-            if (lastBookNumber == 0) return;
+                lastBookNumber--;
+                if (lastBookNumber == 0) return;
+            }
 
             //переход на следующую страницу при необходимости
             string nextAdress = "https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString();
