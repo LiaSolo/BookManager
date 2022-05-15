@@ -161,11 +161,12 @@ namespace Файловый_менеджер
             BooksParse(adress, countBooks);
         }
 
-        //<div class="a-section a-spacing-small a-spacing-top-small">
-        //        <span>5 results for</span><span> </span><span class="a-color-state a-text-bold">"вино из одуванчиков"</span>
-
         internal void BooksParse(string adress, int lastBookNumber)
         {
+
+            //кодировка лагает
+
+
             WebClient webClient = new WebClient();
             webClient.Headers.Add(HttpRequestHeader.AcceptCharset, "UTF-8");
             webClient.Encoding = Encoding.UTF8;
@@ -176,15 +177,16 @@ namespace Файловый_менеджер
 
             try
             {
-                numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
+                
+                numberBooksOnPage = new string[2];
+                numberBooksOnPage[0] = "1";
+                numberBooksOnPage[1] = Regex.Matches(page, "<span>(.*?) results for")[0].Groups[1].Value;
             }
             catch(Exception)
             {
                 try
                 {
-                    numberBooksOnPage = new string[2];
-                    numberBooksOnPage[0] = "1";
-                    numberBooksOnPage[1] = Regex.Matches(page, "<span>(.*?) results for")[0].Groups[1].Value;
+                    numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
                 }
                 catch (Exception)
                 {
@@ -217,6 +219,7 @@ namespace Файловый_менеджер
             MatchCollection headBlockMatchCollection = regexHeadBlock.Matches(page);
             foreach (Match item in headBlockMatchCollection)
             {
+                lastBookNumber--;
                 MatchCollection matches = regexName.Matches(item.Groups[1].Value.Replace("&#x27", ""));
                 ListViewItem listitem = new ListViewItem(matches[0].Groups[1].Value);
 
@@ -268,9 +271,11 @@ namespace Файловый_менеджер
                 else listitem.SubItems.Add(matches[0].Groups[1].Value);
 
                 listViewBooks.Items.Add(listitem);
-                lastBookNumber--;
-                if (lastBookNumber == 0) return;
+                
+                
             }
+
+            if (lastBookNumber == 0) return;
 
             //переход на следующую страницу при необходимости
             string nextAdress = "https://www.amazon.com/s?k=" + textBoxSearching.Text + "&i=stripbooks-intl-ship&page=" + (++numberCurrentPage).ToString();
