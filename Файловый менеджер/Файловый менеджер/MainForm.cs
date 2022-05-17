@@ -214,11 +214,13 @@ namespace Файловый_менеджер
 
                 //ссылка на книгу
                 MatchCollection matchesLink = regexLink.Matches(item.Groups[1].Value);
-                try
-                {
-                    books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
-                }
-                catch { }
+                //try
+                //{
+                //    books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
+                //}
+                //catch { }
+
+                books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
 
                 MatchCollection matchesAuthorHref = regexAuthorWithHref.Matches(item.Groups[1].Value); 
                 MatchCollection matchesAuthorNoHref = regexAuthorWithoutHref.Matches(item.Groups[1].Value); 
