@@ -143,7 +143,6 @@ namespace Файловый_менеджер
             string adress = "https://www.amazon.com/s?k=" + textBoxSearching.Text
                 + "&i=stripbooks-intl-ship&ref=nb_sb_noss";
 
-            //"https://www.amazon.com/s?k=вино из одуванчиков&i=stripbooks-intl-ship&ref=nb_sb_noss";
 
             int countBooks;
 
@@ -179,14 +178,19 @@ namespace Файловый_менеджер
 
                 //строчка для проверки кракозябр
                 string[] numberBooksOnPage = Regex.Matches(page, "<span>(.*?) of ")[0].Groups[1].Value.Split('-');
+                
+                //MessageBox.Show(numberBooksOnPage[0] + " " + numberBooksOnPage[1]);
             }
             catch (Exception)
             {
-
                 webClient.Headers[HttpRequestHeader.AcceptCharset] = "gzip";
-                GZipStream responseStream = new GZipStream(webClient.OpenRead(adress), CompressionMode.Decompress);
-                StreamReader reader = new StreamReader(responseStream);
-                page = reader.ReadToEnd();
+                using (GZipStream responseStream = new GZipStream(webClient.OpenRead(adress), CompressionMode.Decompress))
+                {
+                    using (StreamReader reader = new StreamReader(responseStream))
+                    {
+                        page = reader.ReadToEnd();
+                    }
+                }               
             }
 
             Regex regexName = new Regex("<span class=\"a-size-medium a-color-base a-text-normal\">(.*?)</span>");
@@ -214,7 +218,7 @@ namespace Файловый_менеджер
                 {
                     books.Add(matches[0].Groups[1].Value, matchesLink[0].Groups[1].Value);
                 }
-                catch (Exception) { }
+                catch { }
 
                 MatchCollection matchesAuthorHref = regexAuthorWithHref.Matches(item.Groups[1].Value); 
                 MatchCollection matchesAuthorNoHref = regexAuthorWithoutHref.Matches(item.Groups[1].Value); 
